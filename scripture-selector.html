@@ -39,7 +39,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #1f3864;
+          20color: #1f3864;
             font-weight: 600;
             font-size: 14px;
         }
@@ -54,7 +54,7 @@
             cursor: pointer;
             transition: border-color 0.3s;
         }
-        select:focus {
+      20select:focus {
             outline: none;
             border-color: #1f3864;
         }
@@ -80,7 +80,7 @@
         .verses-container {
             margin-top: 30px;
             padding-top: 30px;
-            border-top: 2px solid #e0e0e0;
+            border-top: 2px solid20#e0e0e0;
         }
         .verse {
             background: #f5f5f5;
@@ -95,7 +95,7 @@
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
-        }
+        7D
         .verse-text {
             color: #333;
             font-size: 15px;
@@ -112,71 +112,116 @@
             padding: 15px;
             border-radius: 6px;
             margin-top: 20px;
-            border-left: 4px solid #c33;
+      20     border-left: 4px solid #c33;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📖 Select Scripture</h1>
-        
+        <h1>&#128214; Select Scripture</h1>
+
         <div class="form-group">
             <label for="bookSelect">Book</label>
             <select id="bookSelect">
                 <option value="">Choose a book...</option>
             </select>
         </div>
-        
+
         <div class="form-group">
-            <label for="chapterSelect">Chapter</label>
+           20    <label for="chapterSelect">Chapter</label>
             <select id="chapterSelect" disabled>
                 <option value="">Choose a chapter...</option>
             </select>
         </div>
-        
+
         <div class="form-group">
             <label for="verseSelect">Verse</label>
             <select id="verseSelect" disabled>
-                <option value="">Choose a verse...</option>
+                <option value="">Choose a verse (or leave blank for first 3)</option>
             </select>
         </div>
-        
+
         <button onclick="loadVerses()">Load Scripture</button>
-        
+
         <div id="versesContainer"></div>
     </div>
 
     <script>
-        const books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"];
-        
+        // Book name -> API book code mapping (bible.helloao.org)
+        const bookCodes = {
+            "Genesis": "GEN", "Exodus": "EXO", "Leviticus": "LEV", "Numbers": "NUM",
+            "Deuteronomy": "DEU", "Joshua": "JOS", "Judges": "JDG", "Ruth": "RUT",
+            "1 Samuel": "1SA", "2 Samuel": "2SA", "1 Kings": "1KI", "2 Kings": "2KI",
+            "1 Chronicles": "1CH", "2 Chronicles": "2CH", "Ezra": "EZR", "Nehemiah": "NEH",
+            "Esther": "EST", "Job": "JOB", "Psalms": "PSA", "Proverbs": "PRO",
+            "Ecclesiastes": "ECC", "Song of Solomon": "SNG", "Isaiah": "ISA", "Jeremiah": "JER",
+20           "Lamentations": "LAM", "Ezekiel": "EZK", "Daniel": "DAN", "Hosea": "HOS",
+            "Joel": "JOL", "Amos": "AMO", "Obadiah": "OBA", "Jonah": "JON",
+            "Micah": "MIC", "Nahum": "NAH", "Habakkuk": "HAB", "Zephaniah": "ZEP",
+            "Haggai": "HAG", "Zechariah": "ZEC", "Malachi": "MAL",
+            "Matthew": "MAT", "Mark": "MRK", "Luke": "LUK", "John": "JHN",
+            "Acts": "ACT", "Romans": "ROM", "1 Corinthians": "1CO", "2 Corinthians": "2CO",
+            "Galatians": "GAL", "Ephesians": "EPH", "Philippians": "PHP", "Colossians": "COL",
+            "1 Thessalonians": "1TH", "2 Thessalonians": "2TH", "1 Timothy": "1TI",
+            "2 Timothy": "2TI", "Titus": "TIT", "Philemon": "PHM", "Hebrews": "HEB",
+            "James": "JAS", "1 Peter": "1PE", "2 Peter": 222PE", "1 John": "1JN",
+            "2 John": "2JN", "3 John": "3JN", "Jude": "JUD", "Revelation": "REV"
+        };
+
+        const books = Object.keys(bookCodes);
+
         const chapterCounts = {
             "Genesis": 50, "Exodus": 40, "Leviticus": 27, "Numbers": 36, "Deuteronomy": 34,
             "Joshua": 24, "Judges": 21, "Ruth": 4, "1 Samuel": 31, "2 Samuel": 24,
-            "1 Kings": 22, "2 Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10,
+            "1 Kings": 22, "220Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10,
             "Nehemiah": 13, "Esther": 10, "Job": 42, "Psalms": 150, "Proverbs": 31,
-            "Ecclesiastes": 12, "Isaiah": 66, "Jeremiah": 52, "Lamentations": 5, "Ezekiel": 48,
-            "Daniel": 12, "Hosea": 14, "Joel": 3, "Amos": 9, "Obadiah": 1,
-            "Jonah": 4, "Micah": 7, "Nahum": 3, "Habakkuk": 3, "Zephaniah": 3,
-            "Haggai": 2, "Zechariah": 14, "Malachi": 4, "Matthew": 28, "Mark": 16,
-            "Luke": 24, "John": 21, "Acts": 28, "Romans": 16, "1 Corinthians": 16,
-            "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6, "Philippians": 4, "Colossians": 4,
-            "1 Thessalonians": 5, "2 Thessalonians": 3, "1 Timothy": 6, "2 Timothy": 4, "Titus": 3,
-            "Philemon": 1, "Hebrews": 13, "James": 5, "1 Peter": 5, "2 Peter": 3,
-            "1 John": 5, "2 John": 1, "3 John": 1, "Jude": 1, "Revelation": 22
+            "Ecclesiastes": 12, "Song of Solomon": 8, "Isaiah": 66, "Jeremiah": 52,
+            "Lamentations": 5, "Ezekiel": 48, "Daniel": 12, "Hosea": 14, "Joel": 3,
+            "Amos": 9, "Obadiah": 1, "Jonah": 4, "Micah": 7, "Nahum": 3,
+          20"Habakkuk": 3, "Zephaniah": 3, "Haggai": 2, "Zechariah": 14, "Malachi": 4,
+            "Matthew": 28, "Mark": 16, "Luke": 24, "John": 21, "Acts": 28, "Romans": 16,
+            "1 Corinthians": 16, "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6,
+            "Philippians": 4, "Colossians": 4, "1 Thessalonians": 5, "2 Thessalonians": 3,
+            "1 Timothy": 6, "2 Timothy": 4, "Titus": 3, "Philemon": 1, "Hebrews": 13,
+            "James": 5, "1 Peter": 5, "2 Peter": 3, "1 John": 5, "2 John": 1,
+            "3 John": 1, "Jude": 1, "Revelation": 22
         };
 
-        // Populate books
+        // Extract plain text from a verse's content array
+        function getVerseText(contentArray) {
+            return contentArray.map(item => {
+                if (typeof item === 'string') return item;
+                if20(typeof item === 'object' && item.text) return item.text;
+                return '';
+            }).join('').trim();
+        }
+
+        // Fetch chapter data from bible.helloao.org
+        async function fetchChapter(book, chapter) {
+            const code = bookCodes[book];
+            const url = `https://bible.helloao.org/api/BSB/${code}/${chapter}.json`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+        }
+
+        // Populate books dropdown
         const bookSelect = document.getElementById('bookSelect');
         books.forEach(book => {
             const option = document.createElement('option');
             option.value = book;
             option.textContent = book;
-            bookSelect.appendChild(option);
+    20       bookSelect.appendChild(option);
         });
 
+        // Book selected -> populate chapters
         bookSelect.addEventListener('change', function() {
             const chapterSelect = document.getElementById('chapterSelect');
+            const verseSelect = document.getElementById('verseSelect');
             chapterSelect.innerHTML = '<option value="">Choose a chapter...</option>';
+       20    verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+            verseSelect.disabled = true;
+
             if (this.value) {
                 const chapters = chapterCounts[this.value];
                 for (let i = 1; i <= chapters; i++) {
@@ -189,33 +234,29 @@
             } else {
                 chapterSelect.disabled = true;
             }
-            document.getElementById('verseSelect').disabled = true;
         });
 
+        // Chapter selected -> populate verses
         document.getElementById('chapterSelect').addEventListener('change', async function() {
             const verseSelect = document.getElementById('verseSelect');
-            verseSelect.innerHTML = '<option value="">Choose a verse...</option>';
-            if (this.value) {
-                try {
-                    const book = document.getElementById('bookSelect').value;
-                    const bookUrl = book.toLowerCase().replace(/\s/g, '-').replace(/[0-3]/g, m => ['first', 'second', 'third'][m]);
-                    const response = await fetch(`https://helloao.org/v1/chapters/bsb/${bookUrl}/${this.value}`);
-                    const data = await response.json();
-                    if (data.verses) {
-                        data.verses.forEach(verse => {
-                            const option = document.createElement('option');
-                            option.value = verse.verse;
-                            option.textContent = `Verse ${verse.verse}`;
-                            verseSelect.appendChild(option);
-                        });
-                        verseSelect.disabled = false;
-                    }
-                } catch (e) {
-                    console.error('Error loading verses:', e);
-                    verseSelect.disabled = true;
-                }
-            } else {
-                verseSelect.disabled = true;
+            verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+            verseSelect.disabled = true;
+
+            if (!this.value) return;
+
+            try {
+                const book = document.getElementById('bookSelect').value;
+                const data = await fetchChapter(book, this.value);
+                const verses = data.chapter.content.filter(item => item.type === 'verse');
+                verses.forEach(v => {
+                    const option = document.createElement('option');
+                    option.value = v.number;
+                    option.textContent = `Verse ${v.number}`;
+                    verseSelect.appendChild(option);
+            20   });
+                verseSelect.disabled = false;
+            } catch (e) {
+                console.error('Error loading verses for dropdown:', e);
             }
         });
 
@@ -233,44 +274,35 @@
             container.innerHTML = '<div class="loading">Loading scripture...</div>';
 
             try {
-                const bookUrl = book.toLowerCase().replace(/\s/g, '-').replace(/^(\d+)\s/, (m, num) => {
-                    return ['', 'first-', 'second-', 'third-'][num];
-                });
-                
-                const response = await fetch(`https://helloao.org/v1/chapters/bsb/${bookUrl}/${chapter}`);
-                const data = await response.json();
+          20     const data = await fetchChapter(book, chapter);
+                let verses = data.chapter.content.filter(item => item.type === 'verse');
 
-                if (data.verses) {
-                    let versesToShow = data.verses;
-                    
-                    if (verse) {
-                        const startIndex = versesToShow.findIndex(v => v.verse === parseInt(verse));
-                        if (startIndex !== -1) {
-                            versesToShow = versesToShow.slice(startIndex, startIndex + 3);
-                        }
-                    } else {
-                        versesToShow = versesToShow.slice(0, 3);
-                    }
-
-                    let html = '<div class="verses-container">';
-                    versesToShow.forEach(v => {
-                        html += `
-                            <div class="verse">
-                                <div class="verse-reference">${book} ${chapter}:${v.verse}</div>
-                                <div class="verse-text">${v.text}</div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    container.innerHTML = html;
+                if (verse) {
+                    const startIndex = verses.findIndex(v => v.number === parseInt(verse));
+                    if (startIndex !== -1) {
+                        verses = verses.slice(startIndex, startIndex + 3);
+                        
+               20    }
                 } else {
-                    container.innerHTML = '<div class="error">Could not load scripture. Please try again.</div>';
+                    verses = verses.slice(0, 3);
                 }
+
+                let html = '<div class="verses-container">';
+                verses.forEach(v => {
+                    html += `
+                        <div class="verse">
+                            <div class="verse-reference">${book} ${chapter}:${v.number}</div>
+                            <div class="verse-text">${getVerseText(v.content)}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
             } catch (e) {
-                container.innerHTML = '<div class="error">Error loading scripture. Please check your selection.</div>';
+                container.innerHTML = '<div class="error">Error loading scripture. Please try again.</div>';
                 console.error(e);
             }
         }
-    </script>
+   20</script>
 </body>
 </html>
