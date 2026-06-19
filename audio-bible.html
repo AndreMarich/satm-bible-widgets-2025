@@ -81,3 +81,123 @@
             width: 100%;
             margin-top: 20px;
         }
+        .loading {
+            text-align: center;
+            color: #1f3864;
+            font-size: 14px;
+            padding: 20px;
+        }
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border-left: 4px solid #c33;
+        }
+        .info {
+            background: #e8f4f8;
+            color: #0066cc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border-left: 4px solid #0066cc;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Listen to Scripture</h1>
+        
+        <div class="form-group">
+            <label for="bookSelect">Book</label>
+            <select id="bookSelect">
+                <option value="">Choose a book...</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="chapterSelect">Chapter</label>
+            <select id="chapterSelect" disabled>
+                <option value="">Choose a chapter...</option>
+            </select>
+        </div>
+        
+        <button onclick="loadAudio()">Load Audio</button>
+        
+        <div id="audioContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script>
+        const books = ["Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"];
+        
+        const bookIds = {"Matthew": 40, "Mark": 41, "Luke": 42, "John": 43, "Acts": 44, "Romans": 45, "1 Corinthians": 46, "2 Corinthians": 47, "Galatians": 48, "Ephesians": 49, "Philippians": 50, "Colossians": 51, "1 Thessalonians": 52, "2 Thessalonians": 53, "1 Timothy": 54, "2 Timothy": 55, "Titus": 56, "Philemon": 57, "Hebrews": 58, "James": 59, "1 Peter": 60, "2 Peter": 61, "1 John": 62, "2 John": 63, "3 John": 64, "Jude": 65, "Revelation": 66};
+        
+        const chapterCounts = {"Matthew": 28, "Mark": 16, "Luke": 24, "John": 21, "Acts": 28, "Romans": 16, "1 Corinthians": 16, "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6, "Philippians": 4, "Colossians": 4, "1 Thessalonians": 5, "2 Thessalonians": 3, "1 Timothy": 6, "2 Timothy": 4, "Titus": 3, "Philemon": 1, "Hebrews": 13, "James": 5, "1 Peter": 5, "2 Peter": 3, "1 John": 5, "2 John": 1, "3 John": 1, "Jude": 1, "Revelation": 22};
+
+        // Populate books
+        const bookSelect = document.getElementById('bookSelect');
+        books.forEach(book => {
+            const option = document.createElement('option');
+            option.value = book;
+            option.textContent = book;
+            bookSelect.appendChild(option);
+        });
+
+        bookSelect.addEventListener('change', function() {
+            const chapterSelect = document.getElementById('chapterSelect');
+            chapterSelect.innerHTML = '<option value="">Choose a chapter...</option>';
+            if (this.value) {
+                const chapters = chapterCounts[this.value];
+                for (let i = 1; i <= chapters; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Chapter ${i}`;
+                    chapterSelect.appendChild(option);
+                }
+                chapterSelect.disabled = false;
+            } else {
+                chapterSelect.disabled = true;
+            }
+        });
+
+        async function loadAudio() {
+            const book = document.getElementById('bookSelect').value;
+            const chapter = document.getElementById('chapterSelect').value;
+            const audioContainer = document.getElementById('audioContainer');
+            const infoContainer = document.getElementById('infoContainer');
+
+            if (!book || !chapter) {
+                audioContainer.innerHTML = '<div class="error">Please select a book and chapter.</div>';
+                return;
+            }
+
+            audioContainer.innerHTML = '<div class="loading">Loading audio...</div>';
+            infoContainer.innerHTML = '';
+
+            try {
+                const bookId = bookIds[book];
+                const audioUrl = `https://bible.com/audio/download/${bookId}/${chapter}/BSB_enUS.mp3`;
+                
+                audioContainer.innerHTML = `
+                    <audio controls>
+                        <source src="${audioUrl}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+                
+                infoContainer.innerHTML = `
+                    <div class="info">
+                        <strong>${book} ${chapter}</strong> - Bible audio provided by YouVersion/Bible.com
+                    </div>
+                `;
+            } catch (e) {
+                audioContainer.innerHTML = '<div class="error">Error loading audio. Please try again.</div>';
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
