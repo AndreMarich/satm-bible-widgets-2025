@@ -39,7 +39,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-          20color: #1f3864;
+            color: #1f3864;
             font-weight: 600;
             font-size: 14px;
         }
@@ -54,7 +54,7 @@
             cursor: pointer;
             transition: border-color 0.3s;
         }
-      20select:focus {
+        select:focus {
             outline: none;
             border-color: #1f3864;
         }
@@ -98,7 +98,7 @@
         .info {
             background: #e8f4f8;
             color: #0066cc;
-       20    padding: 15px;
+            padding: 15px;
             border-radius: 6px;
             margin-top: 20px;
             border-left: 4px solid #0066cc;
@@ -188,7 +188,7 @@
             const option = document.createElement('option');
             option.value = book;
             option.textContent = book;
-    20       bookSelect.appendChild(option);
+            bookSelect.appendChild(option);
         });
 
         // Book selected -> populate chapters
@@ -217,18 +217,21 @@
             const audioContainer = document.getElementById('audioContainer');
             const infoContainer = document.getElementById('infoContainer');
 
+            // Build voice tabs HTML
+            const tabsHtml = Object.keys(currentAudioLinks).map(v => `
+                <button type="button" class="voice-tab ${v === voice ? 'active' : ''}"
+                    onclick="switchVoice('${v}')">${voiceNames[v] || v}</button>
+            `).join('');
+
             audioContainer.innerHTML = `
-                <div class="voice-tabs">
-                    ${Object.keys(currentAudioLinks).map(v => `
-                        <button class="voice-tab ${v === voice ? 'active' : ''}"
-                20           onclick="switchVoice('${v}')">${voiceNames[v] || v}</button>
-                    `).join('')}
-                </div>
-                <audio id="bibleAudio" controls>
-                    <source src="${audioUrl}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+                <div class="voice-tabs">${tabsHtml}</div>
+                <audio id="bibleAudio" controls playsinline preload="metadata"></audio>
             `;
+
+            // Set src directly on the element after DOM insertion (iOS-safe)
+            const audioEl = document.getElementById('bibleAudio');
+            audioEl.src = audioUrl;
+            audioEl.load();
 
             infoContainer.innerHTML = `
                 <div class="info">
@@ -277,10 +280,10 @@
                 activeVoice = currentAudioLinks.david ? 'david' : Object.keys(currentAudioLinks)[0];
                 renderAudioPlayer(book, chapter, activeVoice);
             } catch (e) {
-                audioContainer.innerHTML = '<div class="error">Error loading audio. Please try again.</div>';
+                audioContainer.innerHTML = `<div class="error">Error loading audio: ${e.message}. Check your internet connection and try again.</div>`;
                 infoContainer.innerHTML = '';
                 console.error(e);
-    20       }
+            }
         }
     </script>
 </body>

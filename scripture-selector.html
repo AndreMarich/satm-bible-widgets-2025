@@ -39,7 +39,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-          20color: #1f3864;
+            color: #1f3864;
             font-weight: 600;
             font-size: 14px;
         }
@@ -54,7 +54,7 @@
             cursor: pointer;
             transition: border-color 0.3s;
         }
-      20select:focus {
+        select:focus {
             outline: none;
             border-color: #1f3864;
         }
@@ -80,7 +80,7 @@
         .verses-container {
             margin-top: 30px;
             padding-top: 30px;
-            border-top: 2px solid20#e0e0e0;
+            border-top: 2px solid #e0e0e0;
         }
         .verse {
             background: #f5f5f5;
@@ -95,7 +95,7 @@
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
-        7D
+        }
         .verse-text {
             color: #333;
             font-size: 15px;
@@ -112,7 +112,7 @@
             padding: 15px;
             border-radius: 6px;
             margin-top: 20px;
-      20     border-left: 4px solid #c33;
+            border-left: 4px solid #c33;
         }
     </style>
 </head>
@@ -128,7 +128,7 @@
         </div>
 
         <div class="form-group">
-           20    <label for="chapterSelect">Chapter</label>
+            <label for="chapterSelect">Chapter</label>
             <select id="chapterSelect" disabled>
                 <option value="">Choose a chapter...</option>
             </select>
@@ -155,7 +155,7 @@
             "1 Chronicles": "1CH", "2 Chronicles": "2CH", "Ezra": "EZR", "Nehemiah": "NEH",
             "Esther": "EST", "Job": "JOB", "Psalms": "PSA", "Proverbs": "PRO",
             "Ecclesiastes": "ECC", "Song of Solomon": "SNG", "Isaiah": "ISA", "Jeremiah": "JER",
-20           "Lamentations": "LAM", "Ezekiel": "EZK", "Daniel": "DAN", "Hosea": "HOS",
+            "Lamentations": "LAM", "Ezekiel": "EZK", "Daniel": "DAN", "Hosea": "HOS",
             "Joel": "JOL", "Amos": "AMO", "Obadiah": "OBA", "Jonah": "JON",
             "Micah": "MIC", "Nahum": "NAH", "Habakkuk": "HAB", "Zephaniah": "ZEP",
             "Haggai": "HAG", "Zechariah": "ZEC", "Malachi": "MAL",
@@ -164,7 +164,7 @@
             "Galatians": "GAL", "Ephesians": "EPH", "Philippians": "PHP", "Colossians": "COL",
             "1 Thessalonians": "1TH", "2 Thessalonians": "2TH", "1 Timothy": "1TI",
             "2 Timothy": "2TI", "Titus": "TIT", "Philemon": "PHM", "Hebrews": "HEB",
-            "James": "JAS", "1 Peter": "1PE", "2 Peter": 222PE", "1 John": "1JN",
+            "James": "JAS", "1 Peter": "1PE", "2 Peter": "2PE", "1 John": "1JN",
             "2 John": "2JN", "3 John": "3JN", "Jude": "JUD", "Revelation": "REV"
         };
 
@@ -173,12 +173,12 @@
         const chapterCounts = {
             "Genesis": 50, "Exodus": 40, "Leviticus": 27, "Numbers": 36, "Deuteronomy": 34,
             "Joshua": 24, "Judges": 21, "Ruth": 4, "1 Samuel": 31, "2 Samuel": 24,
-            "1 Kings": 22, "220Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10,
+            "1 Kings": 22, "2 Kings": 25, "1 Chronicles": 29, "2 Chronicles": 36, "Ezra": 10,
             "Nehemiah": 13, "Esther": 10, "Job": 42, "Psalms": 150, "Proverbs": 31,
             "Ecclesiastes": 12, "Song of Solomon": 8, "Isaiah": 66, "Jeremiah": 52,
             "Lamentations": 5, "Ezekiel": 48, "Daniel": 12, "Hosea": 14, "Joel": 3,
             "Amos": 9, "Obadiah": 1, "Jonah": 4, "Micah": 7, "Nahum": 3,
-          20"Habakkuk": 3, "Zephaniah": 3, "Haggai": 2, "Zechariah": 14, "Malachi": 4,
+            "Habakkuk": 3, "Zephaniah": 3, "Haggai": 2, "Zechariah": 14, "Malachi": 4,
             "Matthew": 28, "Mark": 16, "Luke": 24, "John": 21, "Acts": 28, "Romans": 16,
             "1 Corinthians": 16, "2 Corinthians": 13, "Galatians": 6, "Ephesians": 6,
             "Philippians": 4, "Colossians": 4, "1 Thessalonians": 5, "2 Thessalonians": 3,
@@ -191,7 +191,7 @@
         function getVerseText(contentArray) {
             return contentArray.map(item => {
                 if (typeof item === 'string') return item;
-                if20(typeof item === 'object' && item.text) return item.text;
+                if (typeof item === 'object' && item.text) return item.text;
                 return '';
             }).join('').trim();
         }
@@ -211,7 +211,7 @@
             const option = document.createElement('option');
             option.value = book;
             option.textContent = book;
-    20       bookSelect.appendChild(option);
+            bookSelect.appendChild(option);
         });
 
         // Book selected -> populate chapters
@@ -219,7 +219,7 @@
             const chapterSelect = document.getElementById('chapterSelect');
             const verseSelect = document.getElementById('verseSelect');
             chapterSelect.innerHTML = '<option value="">Choose a chapter...</option>';
-       20    verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+            verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
             verseSelect.disabled = true;
 
             if (this.value) {
@@ -239,23 +239,29 @@
         // Chapter selected -> populate verses
         document.getElementById('chapterSelect').addEventListener('change', async function() {
             const verseSelect = document.getElementById('verseSelect');
-            verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+            verseSelect.innerHTML = '<option value="">Loading verses...</option>';
             verseSelect.disabled = true;
 
-            if (!this.value) return;
+            if (!this.value) {
+                verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+                return;
+            }
 
             try {
                 const book = document.getElementById('bookSelect').value;
                 const data = await fetchChapter(book, this.value);
                 const verses = data.chapter.content.filter(item => item.type === 'verse');
+                verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
                 verses.forEach(v => {
                     const option = document.createElement('option');
                     option.value = v.number;
                     option.textContent = `Verse ${v.number}`;
                     verseSelect.appendChild(option);
-            20   });
+                });
                 verseSelect.disabled = false;
             } catch (e) {
+                verseSelect.innerHTML = '<option value="">Error loading - tap Load Scripture to continue</option>';
+                verseSelect.disabled = true;
                 console.error('Error loading verses for dropdown:', e);
             }
         });
@@ -274,15 +280,14 @@
             container.innerHTML = '<div class="loading">Loading scripture...</div>';
 
             try {
-          20     const data = await fetchChapter(book, chapter);
+                const data = await fetchChapter(book, chapter);
                 let verses = data.chapter.content.filter(item => item.type === 'verse');
 
                 if (verse) {
                     const startIndex = verses.findIndex(v => v.number === parseInt(verse));
                     if (startIndex !== -1) {
                         verses = verses.slice(startIndex, startIndex + 3);
-                        
-               20    }
+                    }
                 } else {
                     verses = verses.slice(0, 3);
                 }
@@ -299,10 +304,10 @@
                 html += '</div>';
                 container.innerHTML = html;
             } catch (e) {
-                container.innerHTML = '<div class="error">Error loading scripture. Please try again.</div>';
+                container.innerHTML = `<div class="error">Error loading scripture: ${e.message}. Check your internet connection and try again.</div>`;
                 console.error(e);
             }
         }
-   20</script>
+    </script>
 </body>
 </html>
