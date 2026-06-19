@@ -137,7 +137,7 @@
         <div class="form-group">
             <label for="verseSelect">Verse</label>
             <select id="verseSelect" disabled>
-                <option value="">Choose a verse (or leave blank for first 3)</option>
+                <option value="">Choose a start verse (or leave blank for full chapter)</option>
             </select>
         </div>
 
@@ -219,7 +219,7 @@
             const chapterSelect = document.getElementById('chapterSelect');
             const verseSelect = document.getElementById('verseSelect');
             chapterSelect.innerHTML = '<option value="">Choose a chapter...</option>';
-            verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+            verseSelect.innerHTML = '<option value="">Choose a start verse (or leave blank for full chapter)</option>';
             verseSelect.disabled = true;
 
             if (this.value) {
@@ -243,7 +243,7 @@
             verseSelect.disabled = true;
 
             if (!this.value) {
-                verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+                verseSelect.innerHTML = '<option value="">Choose a start verse (or leave blank for full chapter)</option>';
                 return;
             }
 
@@ -251,7 +251,7 @@
                 const book = document.getElementById('bookSelect').value;
                 const data = await fetchChapter(book, this.value);
                 const verses = data.chapter.content.filter(item => item.type === 'verse');
-                verseSelect.innerHTML = '<option value="">Choose a verse (or leave blank for first 3)</option>';
+                verseSelect.innerHTML = '<option value="">Choose a start verse (or leave blank for full chapter)</option>';
                 verses.forEach(v => {
                     const option = document.createElement('option');
                     option.value = v.number;
@@ -286,11 +286,10 @@
                 if (verse) {
                     const startIndex = verses.findIndex(v => v.number === parseInt(verse));
                     if (startIndex !== -1) {
-                        verses = verses.slice(startIndex, startIndex + 3);
+                        verses = verses.slice(startIndex);
                     }
-                } else {
-                    verses = verses.slice(0, 3);
                 }
+                // else: show full chapter (no slice)
 
                 let html = '<div class="verses-container">';
                 verses.forEach(v => {
